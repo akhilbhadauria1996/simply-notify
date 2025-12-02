@@ -1,0 +1,42 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/simply_notify
+    username: simply
+    password: simply
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+logging:
+  level:
+    root: INFO
+    org.springframework.amqp: DEBUG
+
+notification:
+  exchange: notifications.exchange
+  queue: notifications.queue
+  routing-key: notifications.key
+  retry:
+    max-attempts: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
