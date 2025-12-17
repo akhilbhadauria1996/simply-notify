@@ -16,10 +16,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationConsumer {
 
-	@Autowired
-	NotificationRepo notificationRepo;
+	private final NotificationRepo notificationRepo;
 
-	@RabbitListener(queues = "notification.queue")
+	@RabbitListener(queues = "notifications.queue")
 	public void handle(String notificationIdStr) {
 		
 		try {

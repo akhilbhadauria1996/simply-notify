@@ -3,20 +3,26 @@ package com.simply.notify.notification_service.service;
 import java.time.Instant;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.simply.notify.notification_service.dto.CreateNotificationRequest;
 import com.simply.notify.notification_service.entity.Notification;
 import com.simply.notify.notification_service.repo.NotificationRepo;
 
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
 public class NotificationService {
 	
-	private NotificationRepo notificationRepo;
-	private RabbitTemplate rabbitTemplate;
+	private final NotificationRepo notificationRepo;
+	private final RabbitTemplate rabbitTemplate;
 	
-	@Value("exchange")
+	@Value("${notification.exchange}")
 	private String exchange;
-	@Value("routing-key")
+	@Value("${notification.routing-key}")
 	private String key;
 	
 	public Notification createAndEnque(CreateNotificationRequest request) {
