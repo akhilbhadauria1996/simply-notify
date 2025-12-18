@@ -11,7 +11,9 @@ import com.simply.notify.notification_service.entity.Notification;
 import com.simply.notify.notification_service.repo.NotificationRepo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class NotificationConsumer {
@@ -20,6 +22,8 @@ public class NotificationConsumer {
 
 	@RabbitListener(queues = "notifications.queue")
 	public void handle(String notificationIdStr) {
+		
+		log.info("==================inside listener handler==================");
 		
 		try {
 			Long notificationId = Long.parseLong(notificationIdStr);

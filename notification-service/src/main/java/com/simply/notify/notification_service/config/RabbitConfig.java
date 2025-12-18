@@ -26,7 +26,7 @@ public class RabbitConfig {
 
 	@Bean
 	public DirectExchange exchange() {
-		return new DirectExchange(null, false, false);
+		return new DirectExchange(exchangeName, true, false);
 	}
 	
 	@Bean
