@@ -1,14 +1,9 @@
 package com.simply.notify.notification_service.consumer;
 
-import java.time.Instant;
-import java.util.Optional;
-
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.simply.notify.notification_service.entity.Notification;
-import com.simply.notify.notification_service.repo.NotificationRepo;
+import com.simply.notify.notification_service.service.NotificationProcessingService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,37 +13,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class NotificationConsumer {
 
-	private final NotificationRepo notificationRepo;
+	private final NotificationProcessingService notificationProcessingService;
 
 	@RabbitListener(queues = "notifications.queue")
 	public void handle(String notificationIdStr) {
-		
+
 		log.info("==================inside listener handler==================");
-		
+
 		try {
 			Long notificationId = Long.parseLong(notificationIdStr);
-			notificationRepo.findById(notificationId).ifPresent(
-					n -> {
-						try {
-							System.out.println("Processing Notification with id - "+n.getId()+" to - "+n.getToAddr());
-							n.setStatus("SENT");
-							n.setAttempts(n.getAttempts() == null ? 0 : n.getAttempts()+1);	
-							n.setUpdatedAt(Instant.now());
-							notificationRepo.save(n);
-						}catch (Exception e) {
-							System.out.println("Notification not found for id - "+ n.getId());
-							n.setAttempts(n.getAttempts() == null ? 0 : n.getAttempts()+1);	
-							if(n.getAttempts() >= 3) n.setStatus("Failed");
-							else n.setStatus("Pending");
-							notificationRepo.save(n);
-						}
-					});
-			
-			
+
+			notificationProcessingService.processNotification(notificationId);
+
 		} catch (NumberFormatException e) {
-			System.out.println("Invalid notification id "+ notificationIdStr);
+			System.out.println("Invalid notification id " + notificationIdStr);
 		}
-		
-		
+
 	}
 }
