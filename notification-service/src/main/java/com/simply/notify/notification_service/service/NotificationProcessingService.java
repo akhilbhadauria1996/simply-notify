@@ -34,7 +34,7 @@ public class NotificationProcessingService {
 			n.setAttempts(n.getAttempts() == null ? 1 : n.getAttempts() + 1);
 
 		} catch (Exception e) {
-			log.info("Failed to send notification {} ", n.getId(), e);
+			log.error("Failed to send notification {} ", n.getId(), e);
 			n.setAttempts(n.getAttempts() == null ? 1 : n.getAttempts() + 1);
 			if (n.getAttempts() >= MAX_ATTEMPTS)
 				n.setStatus("FAILED");
@@ -47,6 +47,8 @@ public class NotificationProcessingService {
 	}
 
 	private void sendNotification(Notification notification) {
+		
+		throw new RuntimeException("Simulate faliure");
 
 	}
 

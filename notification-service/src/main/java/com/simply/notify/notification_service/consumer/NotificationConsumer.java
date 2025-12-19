@@ -17,14 +17,10 @@ public class NotificationConsumer {
 
 	@RabbitListener(queues = "notifications.queue")
 	public void handle(String notificationIdStr) {
-
 		log.info("==================inside listener handler==================");
-
 		try {
 			Long notificationId = Long.parseLong(notificationIdStr);
-
 			notificationProcessingService.processNotification(notificationId);
-
 		} catch (NumberFormatException e) {
 			System.out.println("Invalid notification id " + notificationIdStr);
 		}
