@@ -3,6 +3,7 @@ package com.simply.notify.notification_service.entity;
 import java.time.Instant;
 
 import jakarta.annotation.Generated;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +34,8 @@ public class Notification {
 	
 	private String status; //Pending, Failed, Sent
 	private Integer attempts;
+	@Column(name = "next_retry_at")
+	private Instant nextRetryAt;
 	private Instant createdAt;
 	private Instant updatedAt;
 

@@ -1,5 +1,6 @@
 package com.simply.notify.notification_service.scheduler;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -29,7 +30,7 @@ public class NotificationScheduler {
 	public void retryPendingNotifications() {
 		log.info("============ processing the scheduler ============");
 		try {
-			List<Notification> notificationList =  notificationRepo.findByAttemptsLessThanAndStatus(3, "PENDING");
+			List<Notification> notificationList =  notificationRepo.findByAttemptsLessThanAndStatusAndNextRetryAtLessThanEqual(3, "PENDING", Instant.now());
 			log.info("============ sending notifications to "+notificationList.size()+" users ============");
 			for(Notification n : notificationList) {
 				rabbitTemplate.convertAndSend(exchange, key, n.getId().toString());
