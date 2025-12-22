@@ -33,9 +33,10 @@ public class NotificationProcessingService {
 		} catch (Exception e) {
 			log.error("Failed to send notification {} ", n.getId(), e);
 			n.setAttempts(n.getAttempts() == null ? 1 : n.getAttempts() + 1);
-			if (n.getAttempts() >= MAX_ATTEMPTS)
+			if (n.getAttempts() >= MAX_ATTEMPTS) {
 				n.setStatus("FAILED");
 				n.setNextRetryAt(null);
+			}
 			else {
 				n.setStatus("PENDING");
 				n.setNextRetryAt(calculateRetryAt(n.getAttempts()));
