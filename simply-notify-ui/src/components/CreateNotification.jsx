@@ -7,7 +7,7 @@ function CreateNotification(){
     const [body, setBody] = useState("");
 
     const handleSubmit = () => {
-        con
+        // const pay
     }
 
     return(
