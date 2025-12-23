@@ -2,6 +2,7 @@ package com.simply.notify.notification_service.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import com.simply.notify.notification_service.service.NotificationService;
 
 @RestController
 @RequestMapping(value = "/notification")
+@CrossOrigin(origins = "http://localhost:5173")
 public class NotificationController {
 	
 	@Autowired
