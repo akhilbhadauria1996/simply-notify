@@ -1,19 +1,23 @@
-import { use, useState } from "react";
+import { useState } from "react";
 
 function CreateNotification() {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [userId, setUserId] = useState("");
-  const [loading, setLoading] = useState("");
+  const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setErrorMsg("");
+    setSuccessMsg("");
+
     console.log({ email, subject, body });
 
     const payload = {
-      userId: 1,
+      userId: Number(userId),
       type: "EMAIL",
       to: email,
       subject: subject,
@@ -38,16 +42,30 @@ function CreateNotification() {
       const data = await response.json();
       console.log(data);
 
-      alert("Notification created !");
+      setSuccessMsg("Notification created successfully");
+      setUserId("");
+      setEmail("");
+      setSubject("");
+      setBody("");
     } catch (error) {
       console.error(error);
-      alert("Failed to create Notification");
+      setErrorMsg("Failed to create Notification");
+    }finally{
+        setLoading(false);
     }
   };
 
   return (
     <div>
       <h2>Create Notification</h2>
+      <div>
+        <label>User Id:</label>
+        <input
+          type="number"
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
+        ></input>
+      </div>
       <div>
         <label>Email:</label>
         <input
@@ -67,12 +85,13 @@ function CreateNotification() {
       <div>
         <label>Body:</label>
         <textarea
-          type="text"
           value={body}
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
       </div>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} disabled={loading} >{loading ? "Creating..." : "Submit"}</button>
+      {successMsg && <p style={{color:"green"}}>{successMsg}</p>}
+      {errorMsg && <p style={{color:"red"}}>{errorMsg}</p>}
     </div>
   );
 }
