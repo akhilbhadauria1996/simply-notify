@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BASE_URL_USER_SERVICE } from "../api/config";
 
 function CreateUser() {
   const [name, setName] = useState("");
@@ -19,7 +20,7 @@ function CreateUser() {
     };
 
     try {
-      const response = await fetch("http://localhost:8081/user", {
+      const response = await fetch(`${BASE_URL_USER_SERVICE}/user`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers:{

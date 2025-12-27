@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { BASE_URL_USER_SERVICE } from "../api/config";
 
-function UserList() {
+function UserList({onUserSelect}) {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
@@ -14,7 +15,7 @@ function UserList() {
     setError("");
     setUsers([]);
     try {
-      const response = await fetch("http://localhost:8081/user");
+      const response = await fetch(`${BASE_URL_USER_SERVICE}/user`);
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }
@@ -28,7 +29,7 @@ function UserList() {
   };
 
   return (
-    <div>
+    <div >
       <h2>User List</h2>
       <div>
         {loading && <p>Loading...</p>}
@@ -46,7 +47,11 @@ function UserList() {
             </thead>
             <tbody>
               {users.map((user, index) => (
-                <tr key={user.id}>
+                <tr key={user.id} 
+                onClick={ ()=> onUserSelect(user)} 
+                style={{cursor:"pointer"}}
+                
+                 >
                   <td>{index + 1}</td>
                   <td>{user.id}</td>
                   <td>{user.name}</td>

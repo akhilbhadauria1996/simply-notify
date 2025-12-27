@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BASE_URL_NOTIFICATION_SERVICE } from "../api/config";
 
-function CreateNotification() {
+function CreateNotification({ selectedUser, onBack}) {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -8,6 +9,11 @@ function CreateNotification() {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  useEffect(() => {
+    setUserId(selectedUser.id)
+    setEmail(selectedUser.email)
+  }, [selectedUser]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -24,7 +30,7 @@ function CreateNotification() {
       body: body,
     };
 
-    const url = "http://localhost:8082/notification";
+    const url = `${BASE_URL_NOTIFICATION_SERVICE}/notification`;
 
     try {
       const response = await fetch(url, {
@@ -50,20 +56,22 @@ function CreateNotification() {
     } catch (error) {
       console.error(error);
       setErrorMsg("Failed to create Notification");
-    }finally{
-        setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
-
+ 
   return (
     <div>
       <h2>Create Notification</h2>
+      <button onClick={onBack} >← Back to User List</button>
       <div>
         <label>User Id:</label>
         <input
           type="number"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+          disabled={!!selectedUser}
         ></input>
       </div>
       <div>
@@ -72,6 +80,7 @@ function CreateNotification() {
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          disabled={selectedUser !== null}
         ></input>
       </div>
       <div>
@@ -90,8 +99,8 @@ function CreateNotification() {
         ></textarea>
       </div>
       <button onClick={handleSubmit} disabled={loading} >{loading ? "Creating..." : "Submit"}</button>
-      {successMsg && <p style={{color:"green"}}>{successMsg}</p>}
-      {errorMsg && <p style={{color:"red"}}>{errorMsg}</p>}
+      {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
     </div>
   );
 }
