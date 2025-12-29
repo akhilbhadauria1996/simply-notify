@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL_NOTIFICATION_SERVICE } from "../api/config";
+import { BASE_URL, BASE_URL_NOTIFICATION_SERVICE } from "../api/config";
 
 function CreateNotification({ selectedUser, onBack}) {
   const [email, setEmail] = useState("");
@@ -30,7 +30,7 @@ function CreateNotification({ selectedUser, onBack}) {
       body: body,
     };
 
-    const url = `${BASE_URL_NOTIFICATION_SERVICE}/notification`;
+    const url = `${BASE_URL}/notification`;
 
     try {
       const response = await fetch(url, {

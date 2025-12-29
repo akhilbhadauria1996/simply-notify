@@ -16,7 +16,6 @@ import com.simply.notify.user_service.repo.UserRepo;
 
 @RestController
 @RequestMapping(value = "/user")
-@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 	
 	@Autowired

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BASE_URL_USER_SERVICE } from "../api/config";
+import { BASE_URL, BASE_URL_USER_SERVICE } from "../api/config";
 
 function UserList({onUserSelect}) {
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ function UserList({onUserSelect}) {
     setError("");
     setUsers([]);
     try {
-      const response = await fetch(`${BASE_URL_USER_SERVICE}/user`);
+      const response = await fetch(`${BASE_URL}/user`);
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }

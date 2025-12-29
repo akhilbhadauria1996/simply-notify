@@ -17,7 +17,6 @@ import com.simply.notify.notification_service.service.NotificationService;
 
 @RestController
 @RequestMapping(value = "/notification")
-@CrossOrigin(origins = "http://localhost:5173")
 public class NotificationController {
 	
 	@Autowired
