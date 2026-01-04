@@ -5,6 +5,7 @@ function UserList({onUserSelect}) {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchUsers();
@@ -15,7 +16,11 @@ function UserList({onUserSelect}) {
     setError("");
     setUsers([]);
     try {
-      const response = await fetch(`${BASE_URL}/user`);
+      const response = await fetch(`${BASE_URL}/user`, {
+        headers : {
+          "Authorization": "Bearer "+ token
+        }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch users");
       }

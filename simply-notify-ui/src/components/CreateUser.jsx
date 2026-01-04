@@ -8,6 +8,7 @@ function CreateUser() {
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
 
   const handleSubmit = async () => {
 
@@ -25,6 +26,7 @@ function CreateUser() {
         body: JSON.stringify(payload),
         headers:{
             "Content-Type": "application/json",
+            "Authorization": "Bearer "+ token
         } 
       });
 

@@ -9,6 +9,7 @@ function CreateNotification({ selectedUser, onBack}) {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     setUserId(selectedUser.id)
@@ -37,6 +38,7 @@ function CreateNotification({ selectedUser, onBack}) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": "Bearer "+ token
         },
         body: JSON.stringify(payload),
       });

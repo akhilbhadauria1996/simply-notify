@@ -7,7 +7,7 @@ import Login from "./components/Login";
 function App() {
   const [screen, setScreen] = useState("login");
   const [selectedUser, setSelectedUser] = useState(null);
-  const [token, setToken] = useState();
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   const handleSelectedUser = (user) => {
     setSelectedUser(user);
@@ -16,7 +16,7 @@ function App() {
 
   const handleLogin = (jwt) =>{
 
-    localStorage.getItem("token", jwt)
+    localStorage.setItem("token", jwt)
     setToken(jwt)
     setScreen("userList")
 
