@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/simply_notify
+    url: jdbc:postgresql://postgres:5432/simply_notify
     username: simply
     password: simply
     driver-class-name: org.postgresql.Driver
