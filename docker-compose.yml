@@ -1,5 +1,67 @@
 services:
   postgres:
-    image:postgres:15
-    container-name:simply-notify
+    image: postgres:15
+    container_name: simply_postgres
     environment:
+      POSTGRES_DB: simply_notify
+      POSTGRES_USER: simply
+      POSTGRES_PASSWORD: simply
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: simply_rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  redis:
+    image: redis:7
+    container_name: simply_redis
+    ports:
+      - "6379:6379"
+
+  user-service:
+    build: ./user-service
+    container_name: simply_user
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/simply_notify
+      SPRING_DATASOURCE_USERNAME: simply
+      SPRING_DATASOURCE_PASSWORD: simply
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8081:8081"
+
+  notification-service:
+    build: ./notification-service
+    container_name: simply_notification
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/simply_notify
+      SPRING_DATASOURCE_USERNAME: simply
+      SPRING_DATASOURCE_PASSWORD: simply
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8082:8082"
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: simply_gateway
+    depends_on:
+      - user-service
+      - notification-service
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    
+volumes:
+  postgres_data:
